@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import React, {FC} from 'react';
+import PageHeader from "../components/page-header/PageHeader";
 
 const Home: FC = () => {
     return (
@@ -7,7 +8,7 @@ const Home: FC = () => {
             <Head>
                 <title>Home</title>
             </Head>
-            <h1>Home</h1>
+            <PageHeader headerText="Home"/>
         </>
     )
 }

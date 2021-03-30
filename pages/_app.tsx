@@ -3,11 +3,13 @@ import React from 'react'
 import Nav from "../components/navigation/Nav";
 import '../styles/globals.css'
 import {Grid} from "@material-ui/core";
+import {ROUTES} from "../components/navigation/Routes";
+
 
 function App({Component, pageProps}: AppProps) {
     return (
         <>
-            <Nav/>
+            <Nav headerText="Portal NX Demo" navItems={ROUTES}/>
             <Grid container xs={12}>
                 <Grid item xs={false} sm={2}>
                 </Grid>

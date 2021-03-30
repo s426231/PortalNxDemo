@@ -6,13 +6,16 @@ import {
     Toolbar,
     Typography,
 } from '@material-ui/core';
-import HomeIcon from '@material-ui/icons/Home';
-import InfoIcon from '@material-ui/icons/Info';
-import LiveHelpIcon from '@material-ui/icons/LiveHelp';
+
 import React, {FC} from 'react';
+import {NavItem} from "../../models/navigatio";
 
+interface Props {
+    headerText: string;
+    navItems: NavItem[],
+}
 
-const Nav: FC = () => {
+const Nav: FC<Props> = ({headerText, navItems}) => {
 
     return (
         <>
@@ -21,21 +24,17 @@ const Nav: FC = () => {
                     <Grid container>
                         <Grid item sm={5}>
                             <Typography variant="h5">
-                                Next.js TypeScript
+                                {headerText}
                             </Typography>
                         </Grid>
-                        <Grid container justify="flex-end" item sm={7}>
+                        <Grid container justify="center" item sm={7}>
                             <ButtonGroup size="small" variant="contained"
                                          aria-label="small outlined button group">
-                                <Button href="/" startIcon={<HomeIcon/>}>
-                                    Home
-                                </Button>
-                                <Button href="/faq" startIcon={<LiveHelpIcon/>}>
-                                    FAQ
-                                </Button>
-                                <Button href="/about" startIcon={<InfoIcon/>}>
-                                    About
-                                </Button>
+                                {
+                                    navItems.map((item) => {
+                                        return (<Button key={item.name} href={item.link}>{item.name}</Button>)
+                                    })
+                                }
                             </ButtonGroup>
                         </Grid>
                     </Grid>

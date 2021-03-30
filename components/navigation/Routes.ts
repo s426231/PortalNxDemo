@@ -7,7 +7,7 @@ export const ROUTES: NavItem[] = [
     },
     {
         name: "About",
-        link: "/",
+        link: "/about",
     },
     {
         name: "FAQ",

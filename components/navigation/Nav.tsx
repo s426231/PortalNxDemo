@@ -16,7 +16,7 @@ const Nav: FC = () => {
 
     return (
         <>
-            <AppBar color="primary" position="static">
+            <AppBar position="static">
                 <Toolbar>
                     <Grid container>
                         <Grid item sm={5}>
@@ -25,7 +25,7 @@ const Nav: FC = () => {
                             </Typography>
                         </Grid>
                         <Grid container justify="flex-end" item sm={7}>
-                            <ButtonGroup color="default" size="small" variant="contained"
+                            <ButtonGroup size="small" variant="contained"
                                          aria-label="small outlined button group">
                                 <Button href="/" startIcon={<HomeIcon/>}>
                                     Home

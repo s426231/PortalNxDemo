@@ -6,7 +6,7 @@ import PageHeader from "../components/page-header/PageHeader";
 
 const faq = [{
     question: "Whats up?",
-    answer: "PARTY HARD"
+    answer: "Nothing"
 }, {
     question: "Do you like Tik Tok?",
     answer: "No one does"

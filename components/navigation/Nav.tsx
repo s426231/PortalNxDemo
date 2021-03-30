@@ -3,16 +3,73 @@ import {
     Button,
     ButtonGroup,
     Grid,
+    Menu,
+    MenuItem,
     Toolbar,
     Typography,
 } from '@material-ui/core';
-import HomeIcon from '@material-ui/icons/Home';
-import InfoIcon from '@material-ui/icons/Info';
-import LiveHelpIcon from '@material-ui/icons/LiveHelp';
+
 import React, {FC} from 'react';
+import {NavItem} from "../../models/navigatio";
+import PopupState, {bindTrigger, bindMenu} from 'material-ui-popup-state';
 
+interface Props {
+    headerText: string;
+    navItems: NavItem[],
+}
 
-const Nav: FC = () => {
+const Nav: FC<Props> = ({headerText, navItems}) => {
+
+    const navBarRenderer = () => {
+        return navItems.map((item) => {
+            if (!item.children) {
+                return (<Button key={item.name} href={item.link}>{item.name}</Button>)
+            } else {
+                return (
+                    <PopupState variant="popover">
+                        {(popupState) => (
+                            <React.Fragment>
+                                <Button variant="contained" {...bindTrigger(popupState)}>
+                                    {item.name}
+                                </Button>
+                                <Menu {...bindMenu(popupState)}>
+                                    {
+                                        item.children?.map(child => {
+                                            if (!child.children) {
+                                                return <MenuItem onClick={popupState.close}>
+                                                    <a href={child.link}>{child.name}</a>
+                                                </MenuItem>
+                                            } else {
+                                                return <PopupState variant="popover">
+                                                    {(childPopup) => (
+                                                        <React.Fragment>
+                                                            <MenuItem {...bindTrigger(childPopup)}>
+                                                                {child.name}
+                                                            </MenuItem >
+                                                            <Menu  {...bindMenu(childPopup)}
+                                                            >
+                                                                {
+                                                                    child.children?.map(childItem => {
+                                                                        return <MenuItem onClick={childPopup.close}>
+                                                                            <a href={childItem.link}>{childItem.name}</a>
+                                                                        </MenuItem>
+                                                                    })
+                                                                }
+                                                            </Menu>
+                                                        </React.Fragment>
+                                                    )}
+                                                </PopupState>
+                                            }
+                                        })
+                                    }
+                                </Menu>
+                            </React.Fragment>
+                        )}
+                    </PopupState>
+                )
+            }
+        })
+    }
 
     return (
         <>
@@ -21,21 +78,13 @@ const Nav: FC = () => {
                     <Grid container>
                         <Grid item sm={5}>
                             <Typography variant="h5">
-                                Next.js TypeScript
+                                {headerText}
                             </Typography>
                         </Grid>
-                        <Grid container justify="flex-end" item sm={7}>
+                        <Grid container justify="center" item sm={7}>
                             <ButtonGroup size="small" variant="contained"
                                          aria-label="small outlined button group">
-                                <Button href="/" startIcon={<HomeIcon/>}>
-                                    Home
-                                </Button>
-                                <Button href="/faq" startIcon={<LiveHelpIcon/>}>
-                                    FAQ
-                                </Button>
-                                <Button href="/about" startIcon={<InfoIcon/>}>
-                                    About
-                                </Button>
+                                {navBarRenderer()}
                             </ButtonGroup>
                         </Grid>
                     </Grid>

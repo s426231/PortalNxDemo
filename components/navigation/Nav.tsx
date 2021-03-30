@@ -37,22 +37,21 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                         item.children?.map(child => {
                                             if (!child.children) {
                                                 return <MenuItem onClick={popupState.close}>
-                                                    <Button href={child.link}>{child.name}</Button>
+                                                    <a href={child.link}>{child.name}</a>
                                                 </MenuItem>
                                             } else {
                                                 return <PopupState variant="popover">
                                                     {(childPopup) => (
                                                         <React.Fragment>
-                                                            <Button variant="contained" {...bindTrigger(childPopup)}>
+                                                            <MenuItem {...bindTrigger(childPopup)}>
                                                                 {child.name}
-                                                            </Button>
+                                                            </MenuItem >
                                                             <Menu  {...bindMenu(childPopup)}
                                                             >
                                                                 {
                                                                     child.children?.map(childItem => {
                                                                         return <MenuItem onClick={childPopup.close}>
-                                                                            <Button
-                                                                                href={childItem.link}>{childItem.name}</Button>
+                                                                            <a href={childItem.link}>{childItem.name}</a>
                                                                         </MenuItem>
                                                                     })
                                                                 }

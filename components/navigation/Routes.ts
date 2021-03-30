@@ -17,21 +17,23 @@ export const ROUTES: NavItem[] = [
         name: "Dropdown",
         children: [
             {
-                name: "Link 1",
+                name: "About",
+                link: "/about",
             },
             {
-                name: "Link 2"
+                name: "FAQ",
+                link: "/faq",
             },
             {
                 name: "More Links",
                 children: [
                     {
-                        name: "Child-Link 1",
+                        name: "Home",
                         link: "/",
                     },
                     {
-                        name: "Child-Link 2",
-                        link: "/",
+                        name: "FAQ",
+                        link: "/faq",
                     },],
 
             }

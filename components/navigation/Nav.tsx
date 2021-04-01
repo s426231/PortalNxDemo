@@ -9,16 +9,16 @@ import {
     Typography,
 } from '@material-ui/core';
 
-import React, {FC} from 'react';
-import {NavItem} from "../../models/navigatio";
-import PopupState, {bindTrigger, bindMenu} from 'material-ui-popup-state';
+import React, { FC } from 'react';
+import { NavItem } from "../../models/navigatio";
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 interface Props {
     headerText: string;
     navItems: NavItem[],
 }
 
-const Nav: FC<Props> = ({headerText, navItems}) => {
+const Nav: FC<Props> = ({ headerText, navItems }) => {
 
     const navBarRenderer = () => {
         return navItems.map((item) => {
@@ -28,8 +28,8 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                 return (
                     <PopupState variant="popover">
                         {(popupState) => (
-                            <React.Fragment>
-                                <Button variant="contained" {...bindTrigger(popupState)}>
+                            <React.Fragment key={item.id} >
+                                <Button key={item.id} variant="contained" {...bindTrigger(popupState)}>
                                     {item.name}
                                 </Button>
                                 <Menu {...bindMenu(popupState)}>
@@ -37,13 +37,13 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                         item.children?.map(child => {
                                             if (!child.children) {
                                                 return <MenuItem onClick={popupState.close}>
-                                                    <a href={child.link}>{child.name}</a>
+                                                    <a key={item.id} href={child.link}>{child.name}</a>
                                                 </MenuItem>
                                             } else {
                                                 return <PopupState variant="popover">
                                                     {(childPopup) => (
                                                         <React.Fragment>
-                                                            <MenuItem {...bindTrigger(childPopup)}>
+                                                            <MenuItem key={item.id} {...bindTrigger(childPopup)}>
                                                                 {child.name}
                                                             </MenuItem >
                                                             <Menu  {...bindMenu(childPopup)}
@@ -51,7 +51,7 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                                                 {
                                                                     child.children?.map(childItem => {
                                                                         return <MenuItem onClick={childPopup.close}>
-                                                                            <a href={childItem.link}>{childItem.name}</a>
+                                                                            <a key={item.id} href={childItem.link}>{childItem.name}</a>
                                                                         </MenuItem>
                                                                     })
                                                                 }
@@ -65,6 +65,7 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                 </Menu>
                             </React.Fragment>
                         )}
+
                     </PopupState>
                 )
             }
@@ -75,15 +76,15 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
         <>
             <AppBar position="static">
                 <Toolbar>
-                    <Grid container>
-                        <Grid item sm={5}>
+                    <Grid container justify="center">
+                        <Grid item sm={3}>
                             <Typography variant="h5">
                                 {headerText}
                             </Typography>
                         </Grid>
-                        <Grid container justify="center" item sm={7}>
+                        <Grid item sm={5} >
                             <ButtonGroup size="small" variant="contained"
-                                         aria-label="small outlined button group">
+                                aria-label="small outlined button group">
                                 {navBarRenderer()}
                             </ButtonGroup>
                         </Grid>

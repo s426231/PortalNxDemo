@@ -10,10 +10,10 @@ function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <Nav headerText="Portal NX Demo" navItems={ROUTES} />
-            <Grid container xs={12}>
+            <Grid container >
                 <Grid item xs={false} sm={2}>
                 </Grid>
-                <Grid container item xs={12} sm={8}>
+                <Grid item xs={12} sm={8}>
                     <Component {...pageProps} />
                 </Grid>
                 <Grid item xs={false} sm={2}>

@@ -1,14 +1,25 @@
 import Head from 'next/head'
-import React, {FC} from 'react';
-import PageHeader from "../components/page-header/PageHeader";
+import React, { FC } from 'react';
+import MainFeaturedPost from "../components/homepage/mainFeatured";
+import FeaturedPost from "../components/homepage/featuredPosts";
+import { Grid } from '@material-ui/core';
+import { mainFeaturedPost, featuredPosts } from '../mocks/posts';
+
+
 
 const Home: FC = () => {
     return (
         <>
             <Head>
-                <title>Home</title>
+                <title>PortalNX Check</title>
+                <meta name="description" content="PortalNX check SEO purposes" />
             </Head>
-            <PageHeader headerText="Home"/>
+            <MainFeaturedPost post={featuredPosts[0]} />
+            <Grid container spacing={4}>
+                {featuredPosts.map((post) => (
+                    <FeaturedPost key={post.title} post={post} />
+                ))}
+            </Grid>
         </>
     )
 }

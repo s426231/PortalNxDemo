@@ -1,15 +1,14 @@
 import {
     AppBar,
-    Button,
-    Grid,
+    Button, ClickAwayListener,
+    Grid, List, ListItem, ListItemText,
     Menu,
-    MenuItem,
+    MenuItem, Paper, Popper, PopperPlacementType,
     Toolbar,
     Typography,
 } from '@material-ui/core';
-import React, {FC} from 'react';
-import {NavItem} from "../../models/navigatio";
-import PopupState, {bindTrigger, bindMenu} from 'material-ui-popup-state';
+import React, {FC, useState} from 'react';
+import {NavItem, NavItemChild} from "../../models/navigatio";
 import {makeStyles} from "@material-ui/core/styles";
 
 interface Props {
@@ -38,70 +37,94 @@ const useStyles = makeStyles((theme) => ({
         },
 
     },
-    menu: {
-        marginTop: theme.spacing(4.3),
-    },
 }));
 const Nav: FC<Props> = ({headerText, navItems}) => {
     const classes = useStyles();
 
+    const [openLayerTwo, setOpenLayerTwo] = useState<string>("");
+    const [anchorElLayerTwo, setAnchorElLayerTwo] = React.useState<null | HTMLElement>(null);
+
+    const [openLayerThree, setOpenLayerThree] = useState<string>("");
+    const [anchorElLayerThree, setAnchorElLayerThree] = React.useState<null | HTMLElement>(null);
+
+    const handleClickLayerTwo = (listId: string) => (
+        event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
+        setOpenLayerTwo(listId)
+        setAnchorElLayerTwo(event.currentTarget);
+    };
+
+    const handleCloseLayerTwo = () => {
+        setOpenLayerTwo("")
+        setAnchorElLayerTwo(null);
+    };
+
+    const handleClickLayerThree = (listId: string) => (
+        event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
+        setOpenLayerThree(listId)
+        setAnchorElLayerThree(event.currentTarget);
+    };
+
+    const handleCloseLayerThree = () => {
+        setOpenLayerThree("")
+        setAnchorElLayerThree(null);
+    };
+
     const navBarRenderer = () => {
         return navItems.map((layerOne) => {
-                if (!layerOne.children) {
-                    return (<Button key={layerOne.id} className={classes.navButton}
-                                    href={layerOne.link}>{layerOne.name}</Button>)
-                } else {
+                if (layerOne.children) {
                     return (
-                        <PopupState key={layerOne.id} variant="popover">
-                            {(layerTwoPopoverState) => (
-                                <React.Fragment>
-                                    <Button className={classes.navButton} {...bindTrigger(layerTwoPopoverState)}>
-                                        {layerOne.name}
-                                    </Button>
-                                    <Menu className={classes.menu} {...bindMenu(layerTwoPopoverState)}>
-                                        {
-                                            layerOne.children?.map(layerTwo => {
-                                                if (!layerTwo.children) {
-                                                    return <MenuItem key={layerTwo.id} className={classes.navButton}
-                                                                     onClick={layerTwoPopoverState.close}>
-                                                        <a href={layerTwo.link}>{layerTwo.name}</a>
-                                                    </MenuItem>
+                        <>
+                            <Button aria-describedby={layerOne.name} className={classes.navButton} type="button"
+                                    onClick={handleClickLayerTwo(layerOne.name)}>{layerOne.name}</Button>
+                            <Popper id={layerOne.name} placement={"bottom-start"}
+                                    open={openLayerTwo === layerOne.name ? true : false}
+                                    anchorEl={anchorElLayerTwo}>
+                                <ClickAwayListener onClickAway={handleCloseLayerTwo}>
+                                    <Paper>
+                                        <List>
+                                            {layerOne.children.map((layerTwo) => {
+                                                if (layerTwo.children) {
+                                                    return (<> <Button aria-describedby={layerTwo.name}
+                                                                       className={classes.navButton} type="button"
+                                                                       onClick={handleClickLayerThree(layerTwo.name)}>{layerTwo.name}</Button>
+                                                        <Popper id={layerTwo.name} placement={"right-start"}
+                                                                open={openLayerThree === layerTwo.name ? true : false}
+                                                                anchorEl={anchorElLayerThree}> <ClickAwayListener
+                                                            onClickAway={handleCloseLayerThree}>
+                                                            <Paper>
+                                                                {layerTwo.children.map(layerThree => {
+                                                                    return (<ListItem key={layerThree.id} button
+                                                                                      className={classes.navButton}>
+                                                                        <ListItemText>{layerThree.name}</ListItemText>
+                                                                    </ListItem>);
+                                                                })
+                                                                }
+                                                            </Paper></ClickAwayListener></Popper>
+                                                    </>)
                                                 } else {
-                                                    return <PopupState key={layerTwo.id} variant="popover">
-                                                        {(layerThreePopoverState) => (
-                                                            <React.Fragment>
-                                                                <MenuItem
-                                                                    className={classes.navButton}  {...bindTrigger(layerThreePopoverState)}>
-                                                                    {layerTwo.name}
-                                                                </MenuItem>
-                                                                <Menu
-                                                                    className={classes.menu} {...bindMenu(layerThreePopoverState)}
-                                                                >
-                                                                    {
-                                                                        layerTwo.children?.map(layerThree => {
-                                                                            return <MenuItem key={layerThree.id}
-                                                                                             className={classes.navButton}
-                                                                                             onClick={layerThreePopoverState.close}>
-                                                                                <a href={layerThree.link}>{layerThree.name}</a>
-                                                                            </MenuItem>
-                                                                        })
-                                                                    }
-                                                                </Menu>
-                                                            </React.Fragment>
-                                                        )}
-                                                    </PopupState>
+                                                    return (
+                                                        <ListItem key={layerTwo.id} button className={classes.navButton}>
+                                                            <ListItemText>{layerTwo.name}</ListItemText>
+                                                        </ListItem>)
                                                 }
                                             })
-                                        }
-                                    </Menu>
-                                </React.Fragment>
-                            )}
-                        </PopupState>
+                                            }
+                                        </List>
+                                    </Paper>
+                                </ClickAwayListener>
+                            </Popper>
+                        </>
                     )
+                } else {
+                    return (<Button className={classes.navButton} key={layerOne.id}
+                                    href={layerOne.link}>{layerOne.name}</Button>)
                 }
             }
         )
     }
+
 
     return (
         <>

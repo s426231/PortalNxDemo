@@ -41,7 +41,7 @@ export const ROUTES: NavItem[] = [
                 children: [
                     {
                         id: 8,
-                        name: "Home",
+                        name: "Test",
                         link: "/",
                     },
                     {
@@ -54,40 +54,40 @@ export const ROUTES: NavItem[] = [
         ]
     },
     {
-        id: 10,
+        id: 11,
         name: "Dropdown II",
         children: [
             {
-                id: 11,
+                id: 12,
                 name: "About",
                 link: "/about",
-            },
-            {
-                id: 12,
-                name: "FAQ",
-                link: "/faq",
             },
             {
                 id: 13,
-                name: "About",
-                link: "/about",
-            },
-            {
-                id: 14,
                 name: "FAQ",
                 link: "/faq",
             },
             {
+                id: 14,
+                name: "About",
+                link: "/about",
+            },
+            {
                 id: 15,
+                name: "FAQ",
+                link: "/faq",
+            },
+            {
+                id: 16,
                 name: "Some lon text here",
                 children: [
                     {
-                        id: 16,
+                        id: 17,
                         name: "Home",
                         link: "/",
                     },
                     {
-                        id: 17,
+                        id: 18,
                         name: "FAQ",
                         link: "/faq",
                     },],

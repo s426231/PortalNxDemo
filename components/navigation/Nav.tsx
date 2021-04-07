@@ -29,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             color: theme.palette.type === 'light' ? "white" : "black",
             backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[700] : theme.palette.grey[50],
-            '& a':{
+            '& a': {
                 color: theme.palette.type === 'light' ? "white" : "black",
             }
         },
-        '& a':{
+        '& a': {
             textDecoration: "none",
             color: theme.palette.type === 'light' ? "black" : "white",
         },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     menu: {
         marginTop: theme.spacing(4.3),
     },
-    subMenu:{
+    subMenu: {
         marginTop: theme.spacing(0.9),
         marginLeft: theme.spacing(14),
     }
@@ -53,10 +53,10 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
     const navBarRenderer = () => {
         return navItems.map((item) => {
             if (!item.children) {
-                return (<Button className={classes.navButton} key={item.name} href={item.link}>{item.name}</Button>)
+                return (<Button key={item.id} className={classes.navButton} href={item.link}>{item.name}</Button>)
             } else {
                 return (
-                    <PopupState variant="popover">
+                    <PopupState key={item.id} variant="popover">
                         {(popupState) => (
                             <React.Fragment>
                                 <Button className={classes.navButton} {...bindTrigger(popupState)}>
@@ -66,21 +66,25 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                     {
                                         item.children?.map(child => {
                                             if (!child.children) {
-                                                return <MenuItem className={classes.navButton}  onClick={popupState.close}>
-                                                    <a  href={child.link}>{child.name}</a>
+                                                return <MenuItem key={child.id} className={classes.navButton}
+                                                                 onClick={popupState.close}>
+                                                    <a href={child.link}>{child.name}</a>
                                                 </MenuItem>
                                             } else {
-                                                return <PopupState variant="popover">
+                                                return <PopupState key={child.id} variant="popover">
                                                     {(childPopup) => (
                                                         <React.Fragment>
-                                                            <MenuItem className={classes.navButton}  {...bindTrigger(childPopup)}>
+                                                            <MenuItem
+                                                                className={classes.navButton}  {...bindTrigger(childPopup)}>
                                                                 {child.name}
                                                             </MenuItem>
-                                                            <Menu  className={classes.subMenu} {...bindMenu(childPopup)}
+                                                            <Menu className={classes.subMenu} {...bindMenu(childPopup)}
                                                             >
                                                                 {
                                                                     child.children?.map(childItem => {
-                                                                        return <MenuItem  className={classes.navButton} onClick={childPopup.close}>
+                                                                        return <MenuItem key={childItem.id}
+                                                                                         className={classes.navButton}
+                                                                                         onClick={childPopup.close}>
                                                                             <a href={childItem.link}>{childItem.name}</a>
                                                                         </MenuItem>
                                                                     })
@@ -91,14 +95,15 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                                 </PopupState>
                                             }
                                         })
-                                    }
-                                </Menu>
-                            </React.Fragment>
-                        )}
-                    </PopupState>
-                )
-            }
-        })
+                                        }
+                                        </Menu>
+                                        </React.Fragment>
+                                        )}
+                                </PopupState>
+                                )
+                                }
+                        }
+        )
     }
 
     return (

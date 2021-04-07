@@ -1,7 +1,6 @@
 import {
     AppBar,
     Button,
-    ButtonGroup,
     Grid,
     Menu,
     MenuItem,
@@ -42,67 +41,66 @@ const useStyles = makeStyles((theme) => ({
     menu: {
         marginTop: theme.spacing(4.3),
     },
-    subMenu: {
-        marginTop: theme.spacing(0.9),
-        marginLeft: theme.spacing(14),
-    }
+    subMenu: {}
 }));
 const Nav: FC<Props> = ({headerText, navItems}) => {
     const classes = useStyles();
 
     const navBarRenderer = () => {
-        return navItems.map((item) => {
-            if (!item.children) {
-                return (<Button key={item.id} className={classes.navButton} href={item.link}>{item.name}</Button>)
-            } else {
-                return (
-                    <PopupState key={item.id} variant="popover">
-                        {(popupState) => (
-                            <React.Fragment>
-                                <Button className={classes.navButton} {...bindTrigger(popupState)}>
-                                    {item.name}
-                                </Button>
-                                <Menu className={classes.menu} {...bindMenu(popupState)}>
-                                    {
-                                        item.children?.map(child => {
-                                            if (!child.children) {
-                                                return <MenuItem key={child.id} className={classes.navButton}
-                                                                 onClick={popupState.close}>
-                                                    <a href={child.link}>{child.name}</a>
-                                                </MenuItem>
-                                            } else {
-                                                return <PopupState key={child.id} variant="popover">
-                                                    {(childPopup) => (
-                                                        <React.Fragment>
-                                                            <MenuItem
-                                                                className={classes.navButton}  {...bindTrigger(childPopup)}>
-                                                                {child.name}
-                                                            </MenuItem>
-                                                            <Menu className={classes.subMenu} {...bindMenu(childPopup)}
-                                                            >
-                                                                {
-                                                                    child.children?.map(childItem => {
-                                                                        return <MenuItem key={childItem.id}
-                                                                                         className={classes.navButton}
-                                                                                         onClick={childPopup.close}>
-                                                                            <a href={childItem.link}>{childItem.name}</a>
-                                                                        </MenuItem>
-                                                                    })
-                                                                }
-                                                            </Menu>
-                                                        </React.Fragment>
-                                                    )}
-                                                </PopupState>
-                                            }
-                                        })
+        return navItems.map((layerOne) => {
+                if (!layerOne.children) {
+                    return (<Button key={layerOne.id} className={classes.navButton}
+                                    href={layerOne.link}>{layerOne.name}</Button>)
+                } else {
+                    return (
+                        <PopupState key={layerOne.id} variant="popover">
+                            {(layerTwoPopoverState) => (
+                                <React.Fragment>
+                                    <Button className={classes.navButton} {...bindTrigger(layerTwoPopoverState)}>
+                                        {layerOne.name}
+                                    </Button>
+                                    <Menu className={classes.menu} {...bindMenu(layerTwoPopoverState)}>
+                                        {
+                                            layerOne.children?.map(layerTwo => {
+                                                if (!layerTwo.children) {
+                                                    return <MenuItem key={layerTwo.id} className={classes.navButton}
+                                                                     onClick={layerTwoPopoverState.close}>
+                                                        <a href={layerTwo.link}>{layerTwo.name}</a>
+                                                    </MenuItem>
+                                                } else {
+                                                    return <PopupState key={layerTwo.id} variant="popover">
+                                                        {(layerThreePopoverState) => (
+                                                            <React.Fragment>
+                                                                <MenuItem
+                                                                    className={classes.navButton}  {...bindTrigger(layerThreePopoverState)}>
+                                                                    {layerTwo.name}
+                                                                </MenuItem>
+                                                                <Menu
+                                                                    className={classes.subMenu} {...bindMenu(layerThreePopoverState)}
+                                                                >
+                                                                    {
+                                                                        layerTwo.children?.map(layerThree => {
+                                                                            return <MenuItem key={layerThree.id}
+                                                                                             className={classes.navButton}
+                                                                                             onClick={layerThreePopoverState.close}>
+                                                                                <a href={layerThree.link}>{layerThree.name}</a>
+                                                                            </MenuItem>
+                                                                        })
+                                                                    }
+                                                                </Menu>
+                                                            </React.Fragment>
+                                                        )}
+                                                    </PopupState>
+                                                }
+                                            })
                                         }
-                                        </Menu>
-                                        </React.Fragment>
-                                        )}
-                                </PopupState>
-                                )
-                                }
-                        }
+                                    </Menu>
+                                </React.Fragment>
+                            )}
+                        </PopupState>
+                    )
+                }
+            }
         )
     }
 
@@ -116,10 +114,8 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                 {headerText}
                             </Typography>
                         </Grid>
-                        <Grid container justify="center" item sm={7}>
-                            <ButtonGroup size="small">
-                                {navBarRenderer()}
-                            </ButtonGroup>
+                        <Grid container item sm={7}>
+                            {navBarRenderer()}
                         </Grid>
                     </Grid>
                 </Toolbar>

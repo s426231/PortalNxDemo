@@ -41,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
     menu: {
         marginTop: theme.spacing(4.3),
     },
-    subMenu: {}
 }));
 const Nav: FC<Props> = ({headerText, navItems}) => {
     const classes = useStyles();
@@ -76,7 +75,7 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                                                     {layerTwo.name}
                                                                 </MenuItem>
                                                                 <Menu
-                                                                    className={classes.subMenu} {...bindMenu(layerThreePopoverState)}
+                                                                    className={classes.menu} {...bindMenu(layerThreePopoverState)}
                                                                 >
                                                                     {
                                                                         layerTwo.children?.map(layerThree => {

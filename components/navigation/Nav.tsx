@@ -1,14 +1,13 @@
 import {
     AppBar,
     Button, ClickAwayListener,
-    Grid, List, ListItem, ListItemText,
-    Menu,
-    MenuItem, Paper, Popper, PopperPlacementType,
+    Grid,  ListItem, ListItemText,
+    Paper, Popper,
     Toolbar,
     Typography,
 } from '@material-ui/core';
 import React, {FC, useState} from 'react';
-import {NavItem, NavItemChild} from "../../models/navigatio";
+import {NavItem,} from "../../models/navigatio";
 import {makeStyles} from "@material-ui/core/styles";
 
 interface Props {
@@ -71,6 +70,7 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
         setAnchorElLayerThree(null);
     };
 
+
     const navBarRenderer = () => {
         return navItems.map((layerOne) => {
                 if (layerOne.children) {
@@ -79,39 +79,39 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                             <Button aria-describedby={layerOne.name} className={classes.navButton} type="button"
                                     onClick={handleClickLayerTwo(layerOne.name)}>{layerOne.name}</Button>
                             <Popper id={layerOne.name} placement={"bottom-start"}
-                                    open={openLayerTwo === layerOne.name ? true : false}
+                                    open={openLayerTwo === layerOne.name}
                                     anchorEl={anchorElLayerTwo}>
                                 <ClickAwayListener onClickAway={handleCloseLayerTwo}>
                                     <Paper>
-                                        <List>
-                                            {layerOne.children.map((layerTwo) => {
-                                                if (layerTwo.children) {
-                                                    return (<> <Button aria-describedby={layerTwo.name}
-                                                                       className={classes.navButton} type="button"
-                                                                       onClick={handleClickLayerThree(layerTwo.name)}>{layerTwo.name}</Button>
-                                                        <Popper id={layerTwo.name} placement={"right-start"}
-                                                                open={openLayerThree === layerTwo.name ? true : false}
-                                                                anchorEl={anchorElLayerThree}> <ClickAwayListener
-                                                            onClickAway={handleCloseLayerThree}>
-                                                            <Paper>
-                                                                {layerTwo.children.map(layerThree => {
-                                                                    return (<ListItem key={layerThree.id} button
-                                                                                      className={classes.navButton}>
-                                                                        <ListItemText>{layerThree.name}</ListItemText>
-                                                                    </ListItem>);
-                                                                })
-                                                                }
-                                                            </Paper></ClickAwayListener></Popper>
-                                                    </>)
-                                                } else {
-                                                    return (
-                                                        <ListItem key={layerTwo.id} button className={classes.navButton}>
-                                                            <ListItemText>{layerTwo.name}</ListItemText>
-                                                        </ListItem>)
-                                                }
-                                            })
+                                        {layerOne.children.map((layerTwo) => {
+                                            if (layerTwo.children) {
+                                                return (<> <Button aria-describedby={layerTwo.name}
+                                                                   className={classes.navButton} type="button"
+                                                                   onClick={handleClickLayerThree(layerTwo.name)}>{layerTwo.name}</Button>
+                                                    <Popper id={layerTwo.name} placement={"right-start"}
+                                                            open={openLayerThree === layerTwo.name}
+                                                            anchorEl={anchorElLayerThree}> <ClickAwayListener
+                                                        onClickAway={handleCloseLayerThree}>
+                                                        <Paper>
+                                                            {layerTwo.children.map(layerThree => {
+                                                                return (<ListItem key={layerThree.id} button component="a" href={layerThree.link}
+                                                                                  className={classes.navButton}>
+                                                                    <ListItemText>{layerThree.name}</ListItemText>
+                                                                </ListItem>);
+                                                            })
+                                                            }
+                                                        </Paper></ClickAwayListener></Popper>
+                                                </>)
+                                            } else {
+                                                return (
+                                                    <ListItem key={layerTwo.id} button className={classes.navButton}
+                                                              component="a" href={layerTwo.link}>
+                                                        <ListItemText>{layerTwo.name}</ListItemText>
+                                                    </ListItem>
+                                                )
                                             }
-                                        </List>
+                                        })
+                                        }
                                     </Paper>
                                 </ClickAwayListener>
                             </Popper>

@@ -39,6 +39,23 @@ const useStyles = makeStyles((theme) => ({
         },
 
     },
+    dropDownButton: {
+        textDecoration: "none",
+        borderRadius: "0px",
+        color: theme.palette.type === 'light' ? "black" : "white",
+        backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+        '&:hover': {
+            color: theme.palette.type === 'light' ? "white" : "black",
+            backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[700] : theme.palette.grey[50],
+            '& a': {
+                color: theme.palette.type === 'light' ? "white" : "black",
+            }
+        },
+        '& a': {
+            textDecoration: "none",
+            color: theme.palette.type === 'light' ? "black" : "white",
+        },
+    },
 }));
 const Nav: FC<Props> = ({headerText, navItems}) => {
     const classes = useStyles();
@@ -95,9 +112,10 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                         if (layerTwo.children) {
                                             return (<div onMouseLeave={handleCloseLayerThree}>
                                                 <Button
-                                                        aria-describedby={layerTwo.name}
-                                                        className={classes.navButton} type="button"
-                                                        onMouseOver={handleHoverLayerThree(layerTwo.name)}>
+                                                    aria-describedby={layerTwo.name}
+                                                    className={classes.dropDownButton}
+                                                    type="button"
+                                                    onMouseOver={handleHoverLayerThree(layerTwo.name)}>
                                                     {layerTwo.name}
                                                 </Button>
                                                 <Popper id={layerTwo.name}
@@ -111,7 +129,7 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                                                           button
                                                                           component="a"
                                                                           href={layerThree.link}
-                                                                          className={classes.navButton}>
+                                                                          className={classes.dropDownButton}>
                                                                     <ListItemText>
                                                                         {layerThree.name}
                                                                     </ListItemText>
@@ -126,7 +144,7 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                             return (
                                                 <ListItem key={layerTwo.id}
                                                           button
-                                                          className={classes.navButton}
+                                                          className={classes.dropDownButton}
                                                           component="a"
                                                           href={layerTwo.link}>
                                                     <ListItemText>

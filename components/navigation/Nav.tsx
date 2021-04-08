@@ -111,12 +111,16 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                     {layerOne.children.map((layerTwo) => {
                                         if (layerTwo.children && layerTwo.children.length > 0) {
                                             return (<div key={layerTwo.id} onMouseLeave={handleCloseLayerThree}>
-                                                <Button
+                                                <ListItem
+                                                    button
                                                     aria-describedby={layerTwo.name + layerTwo.id}
                                                     className={classes.dropDownButton}
+                                                    component={"button"}
                                                     onMouseOver={handleHoverLayerThree(layerTwo.name)}>
-                                                    {layerTwo.name}
-                                                </Button>
+                                                    <ListItemText>
+                                                        {layerTwo.name}
+                                                    </ListItemText>
+                                                </ListItem>
                                                 <Popper
                                                     id={layerTwo.name + layerTwo.id}
                                                     placement={"right-start"}
@@ -144,6 +148,7 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                             return (
                                                 <ListItem
                                                     key={layerTwo.id}
+                                                    button
                                                     className={classes.dropDownButton}
                                                     component="a"
                                                     href={layerTwo.link}>

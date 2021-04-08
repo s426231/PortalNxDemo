@@ -93,43 +93,43 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
 
     const navBarRenderer = () => {
         return navItems.map((layerOne) => {
-                if (layerOne.children) {
+                if (layerOne.children && layerOne.children.length > 0) {
                     return (
-                        <div onMouseLeave={handleCloseLayerTwo}>
-                            <Button aria-describedby={layerOne.name}
-                                    className={classes.navButton}
-                                    type="button"
-                                    onMouseOver={handleHoverLayerTwo(layerOne.name)}
-                            >
+                        <div key={layerOne.id} onMouseLeave={handleCloseLayerTwo}>
+                            <Button
+                                aria-describedby={layerOne.name + layerOne.id}
+                                className={classes.navButton}
+                                onMouseOver={handleHoverLayerTwo(layerOne.name)}>
                                 {layerOne.name}
                             </Button>
-                            <Popper id={layerOne.name}
-                                    placement={"bottom-start"}
-                                    open={openLayerTwo === layerOne.name}
-                                    anchorEl={anchorElLayerTwo}>
+                            <Popper
+                                id={layerOne.name + layerOne.id}
+                                placement={"bottom-start"}
+                                open={openLayerTwo === layerOne.name}
+                                anchorEl={anchorElLayerTwo}>
                                 <Paper>
                                     {layerOne.children.map((layerTwo) => {
-                                        if (layerTwo.children) {
-                                            return (<div onMouseLeave={handleCloseLayerThree}>
+                                        if (layerTwo.children && layerTwo.children.length > 0) {
+                                            return (<div key={layerTwo.id} onMouseLeave={handleCloseLayerThree}>
                                                 <Button
-                                                    aria-describedby={layerTwo.name}
+                                                    aria-describedby={layerTwo.name + layerTwo.id}
                                                     className={classes.dropDownButton}
-                                                    type="button"
                                                     onMouseOver={handleHoverLayerThree(layerTwo.name)}>
                                                     {layerTwo.name}
                                                 </Button>
-                                                <Popper id={layerTwo.name}
-                                                        placement={"right-start"}
-                                                        open={openLayerThree === layerTwo.name}
-                                                        anchorEl={anchorElLayerThree}>
+                                                <Popper
+                                                    id={layerTwo.name + layerTwo.id}
+                                                    placement={"right-start"}
+                                                    open={openLayerThree === layerTwo.name}
+                                                    anchorEl={anchorElLayerThree}>
                                                     <Paper>
                                                         {layerTwo.children.map(layerThree => {
                                                             return (
-                                                                <ListItem key={layerThree.id}
-                                                                          button
-                                                                          component="a"
-                                                                          href={layerThree.link}
-                                                                          className={classes.dropDownButton}>
+                                                                <ListItem
+                                                                    key={layerThree.id}
+                                                                    component="a"
+                                                                    href={layerThree.link}
+                                                                    className={classes.dropDownButton}>
                                                                     <ListItemText>
                                                                         {layerThree.name}
                                                                     </ListItemText>
@@ -142,11 +142,11 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                                             </div>)
                                         } else {
                                             return (
-                                                <ListItem key={layerTwo.id}
-                                                          button
-                                                          className={classes.dropDownButton}
-                                                          component="a"
-                                                          href={layerTwo.link}>
+                                                <ListItem
+                                                    key={layerTwo.id}
+                                                    className={classes.dropDownButton}
+                                                    component="a"
+                                                    href={layerTwo.link}>
                                                     <ListItemText>
                                                         {layerTwo.name}
                                                     </ListItemText>
@@ -161,9 +161,10 @@ const Nav: FC<Props> = ({headerText, navItems}) => {
                     )
                 } else {
                     return (
-                        <Button className={classes.navButton}
-                                key={layerOne.id}
-                                href={layerOne.link}>
+                        <Button
+                            key={layerOne.id}
+                            className={classes.navButton}
+                            href={layerOne.link}>
                             {layerOne.name}
                         </Button>
                     )
